@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div class="container-fluid h-100">
+      <div class="d-flex align-items-center flex-column m-auto">
+        <div class="my-5">
+          <label for="demo-selector">Select feature</label>
+          <select id="demo-selector">
+            <option value="single-thread">Single thread</option>
+            <option value="multi-thread-native">Native multi threading</option>
+            <option value="multi-thread-comlink">Multi thread comlink</option>
+            <option value="comlink-with-proxy">Comlink with Callback</option>
+          </select>
+        </div>
+        <h1></h1>
+        <section class="w-100 text-center p-5">
+          <input type="file" id="file-upload" />
+          <button type="button" id="start-zip" class="btn btn-secondary">ZIP</button>
+        </section>
+        <section class="w-100 text-center">
+          <button id="test-for-concurrency" class="btn btn-primary">Add a green box</button>
+          <div id="concurrency-test-container" class="d-flex flex-row gap-2 flex-wrap my-2"></div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>
