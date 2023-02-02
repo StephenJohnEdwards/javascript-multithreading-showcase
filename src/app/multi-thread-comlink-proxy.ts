@@ -1,10 +1,9 @@
 import { saveAs } from "file-saver";
-
 import * as Comlink from "comlink";
 import {
+  blobFromFile,
   clearEventListeners,
   queryForApplicationControls,
-  testButtonEventCallback,
   writeTitle,
 } from "./utils";
 
@@ -19,8 +18,10 @@ export async function multiThreadComlinkProxy(domDocument: Document) {
     domDocument,
     "Example 4: multi threading with comlink and callback"
   );
-  const { addBoxesButton, zipButton, greenBoxesContainer, fileInput } =
-    clearEventListeners(domDocument, queryForApplicationControls);
+  const { zipButton, fileInput } = clearEventListeners(
+    domDocument,
+    queryForApplicationControls
+  );
 
   const worker = new Worker(
     new URL("./workers/comlink-proxy", import.meta.url)
@@ -33,19 +34,10 @@ export async function multiThreadComlinkProxy(domDocument: Document) {
     ) => Promise<void>;
   };
 
-  addBoxesButton!.addEventListener(
-    "click",
-    testButtonEventCallback(greenBoxesContainer!)
-  );
-
   zipButton!.addEventListener("click", async () => {
     if (fileInput.files) {
       const firstFile = fileInput.files![0];
-      const arrayBuffer = await firstFile.arrayBuffer();
-      fileInput.files;
-      const blobForFile = new Blob([arrayBuffer], {
-        type: firstFile.type,
-      });
+      const blobForFile = await blobFromFile(firstFile);
       await comlinked.zipAndCallback(
         blobForFile,
         saveFileWhenCompressedProxyFn(`${firstFile.name}.gz`)

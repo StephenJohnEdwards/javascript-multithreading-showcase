@@ -22,12 +22,8 @@ export function queryForApplicationControls(
   )! as HTMLInputElement;
 
   const zipButton = domDocument.getElementById("start-zip")!;
-  const addBoxesButton = domDocument.getElementById("test-for-concurrency")!;
-  const greenBoxesContainer = domDocument.getElementById(
-    "concurrency-test-container"
-  )!;
 
-  return { fileInput, zipButton, addBoxesButton, greenBoxesContainer };
+  return { fileInput, zipButton };
 }
 
 export function testButtonEventCallback(concurrencyTestContainer: HTMLElement) {
@@ -55,17 +51,18 @@ export function clearEventListeners(
     return newNode as HTMLElement;
   }
 
-  const {
-    addBoxesButton: oldAddBoxesButton,
-    zipButton: oldZipButton,
-    greenBoxesContainer: oldGreenBoxesContainer,
-    fileInput: oldFileInput,
-  } = applicationControlsQueryFn(domDocument);
+  const { zipButton: oldZipButton, fileInput: oldFileInput } =
+    applicationControlsQueryFn(domDocument);
 
   return {
-    addBoxesButton: cloneNode(oldAddBoxesButton),
     zipButton: cloneNode(oldZipButton),
     fileInput: cloneNode(oldFileInput) as HTMLInputElement,
-    greenBoxesContainer: cloneNode(oldGreenBoxesContainer),
   };
+}
+
+export async function blobFromFile(file: File): Promise<Blob> {
+  const arrayBuffer = await file.arrayBuffer();
+  return new Blob([arrayBuffer], {
+    type: file.type,
+  });
 }
